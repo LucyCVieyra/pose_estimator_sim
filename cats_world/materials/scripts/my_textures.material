@@ -1,0 +1,14 @@
+material MyTextures/Floor
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture cemento_gastado1.png
+        scale 10 10
+      }
+    }
+  }
+}

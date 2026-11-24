@@ -1,0 +1,2479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdf version='1.9'>
+  <world name='cats_no_collision'>
+
+    <!-- Physics -->
+    <physics type="ode">
+      <max_step_size>0.004</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>250</real_time_update_rate>
+    </physics>
+
+    <!-- Plugins -->
+    <plugin name='gz::sim::systems::Physics' filename='gz-sim-physics-system'/>
+    <plugin name='gz::sim::systems::UserCommands' filename='gz-sim-user-commands-system'/>
+    <plugin name='gz::sim::systems::SceneBroadcaster' filename='gz-sim-scene-broadcaster-system'/>
+    <plugin name='gz::sim::systems::Contact' filename='gz-sim-contact-system'/>
+    <plugin name='gz::sim::systems::Imu' filename='gz-sim-imu-system'/>
+    <plugin name='gz::sim::systems::AirPressure' filename='gz-sim-air-pressure-system'/>
+    <plugin name='gz::sim::systems::Sensors' filename='gz-sim-sensors-system'>
+      <render_engine>ogre2</render_engine>
+    </plugin>
+
+    <gui fullscreen='false'>
+      <plugin name='3D View' filename='GzScene3D'>
+        <gz-gui>
+          <title>3D View</title>
+          <property type='bool' key='showTitleBar'>0</property>
+          <property type='string' key='state'>docked</property>
+        </gz-gui>
+        <engine>ogre2</engine>
+        <scene>scene</scene>
+        <ambient_light>0.5984631152222222 0.5984631152222222 0.5984631152222222</ambient_light>
+        <background_color>0.8984631152222222 0.8984631152222222 0.8984631152222222</background_color>
+        <camera_pose>-6 0 6 0 0.5 0</camera_pose>
+      </plugin>
+      <plugin name='World control' filename='WorldControl'>
+        <gz-gui>
+          <title>World control</title>
+          <property type='bool' key='showTitleBar'>0</property>
+          <property type='bool' key='resizable'>0</property>
+          <property type='double' key='height'>72</property>
+          <property type='double' key='width'>121</property>
+          <property type='double' key='z'>1</property>
+          <property type='string' key='state'>floating</property>
+          <anchors target='3D View'>
+            <line own='left' target='left'/>
+            <line own='bottom' target='bottom'/>
+          </anchors>
+        </gz-gui>
+        <play_pause>1</play_pause>
+        <step>1</step>
+        <start_paused>false</start_paused>
+      </plugin>
+      <plugin name='World stats' filename='WorldStats'>
+        <gz-gui>
+          <title>World stats</title>
+          <property type='bool' key='showTitleBar'>0</property>
+          <property type='bool' key='resizable'>0</property>
+          <property type='double' key='height'>110</property>
+          <property type='double' key='width'>290</property>
+          <property type='double' key='z'>1</property>
+          <property type='string' key='state'>floating</property>
+          <anchors target='3D View'>
+            <line own='right' target='right'/>
+            <line own='bottom' target='bottom'/>
+          </anchors>
+        </gz-gui>
+        <sim_time>1</sim_time>
+        <real_time>1</real_time>
+        <real_time_factor>1</real_time_factor>
+        <iterations>1</iterations>
+      </plugin>
+      <plugin name='Entity tree' filename='EntityTree'/>
+    </gui>
+
+    <!-- Environment -->
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type='adiabatic'/>
+    <scene>
+      <grid>false</grid>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>true</shadows>
+    </scene>
+
+    <!-- Ground plane -->
+    <model name='ground_plane'>
+      <static>true</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction><ode/></friction>
+            <bounce/>
+            <contact/>
+          </surface>
+        </collision>
+        <visual name='visual'>
+        <pose>0 0 0 1.5708 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file://meshes/floor_1.glb</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Lights -->
+    <light name='sunUTC' type='directional'>
+      <pose>0 0 500 0 0 0</pose> <!-- Posición de la luz, la orientación no es relevante para luz direccional -->
+      <cast_shadows>true</cast_shadows>
+      <intensity>1</intensity>
+      <direction>0 0 -1</direction> <!-- Dirección completamente vertical hacia abajo -->
+      <diffuse>0.904 0.904 0.904 1</diffuse>
+      <specular>0.271 0.271 0.271 1</specular>
+      <attenuation>
+        <range>2000</range>
+        <linear>0</linear>
+        <constant>1</constant>
+        <quadratic>0</quadratic>
+      </attenuation>
+    </light>
+
+    <light name='directional_light1' type='directional'>
+      <pose>500 0 500 0 0 0</pose> 
+      <direction>-1 0 -1</direction>
+      <intensity>0.5</intensity>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.5 0.5 0.5 1</specular>
+    </light>
+    
+    <light name='directional_light2' type='directional'>
+      <pose>0 500 500 0 0 0</pose> 
+      <direction>0 -1 -1</direction>
+      <intensity>0.5</intensity>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.5 0.5 0.5 1</specular>
+    </light>
+
+    <light name='directional_light3' type='directional'>
+      <pose>-500 0 500 0 0 0</pose> 
+      <direction>-1 0 -1</direction>
+      <intensity>0.5</intensity>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.5 0.5 0.5 1</specular>
+    </light>
+    
+    <light name='directional_light4' type='directional'>
+      <pose>0 -500 500 0 0 0</pose> 
+      <direction>0 -1 -1</direction>
+      <intensity>0.5</intensity>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.5 0.5 0.5 1</specular>
+    </light>
+
+    <light name='directional_light5' type='directional'>
+      <pose>500 0 500 0 0 0</pose> 
+      <direction>1 0 1</direction>
+      <intensity>0.5</intensity>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.5 0.5 0.5 1</specular>
+    </light>
+    
+    <light name='directional_light6' type='directional'>
+      <pose>0 500 500 0 0 0</pose> 
+      <direction>0 1 1</direction>
+      <intensity>0.5</intensity>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.5 0.5 0.5 1</specular>
+    </light>
+
+    <light name='directional_light7' type='directional'>
+      <pose>-500 0 500 0 0 0</pose> 
+      <direction>1 0 1</direction>
+      <intensity>0.5</intensity>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.5 0.5 0.5 1</specular>
+    </light>
+    
+    <light name='directional_light8' type='directional'>
+      <pose>0 -500 500 0 0 0</pose> 
+      <direction>0 1 1</direction>
+      <intensity>0.5</intensity>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.5 0.5 0.5 1</specular>
+    </light>
+
+    <!-- Walls -->   
+    <model name="back_wall">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>10 0.1 7</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>meshes/piedra_ladrillo_wall_3.glb</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.75 -8 0 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <model name="front_wall">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>10 0.1 7</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>meshes/white_wall_3.glb</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.75 2 0 1.5707 0 0</pose>
+      </link>
+    </model>
+
+    <model name="left_wall">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>10 0.1 7</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <pose>0 0 -1.25 1.5708 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>meshes/grafiti_wall_3.glb</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>-5 0 1.25 0 0 1.5708</pose>
+      </link>
+      <pose>3.75 -3 0 0 0 0</pose>
+    </model>
+
+    <model name="right_wall">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.1 10 7</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <pose>0 0 -1.25 1.5708 0 1.5708</pose>
+          <geometry>
+            <mesh>
+              <uri>meshes/ladrillo_irregular_wall_3.glb</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>8.75 -3 1.25 0 0 0</pose>
+      </link>
+    </model>
+
+    <!-- Obstacles -->
+    <model name="obstacle_1">
+      <static>true</static>
+      <pose>7.5 0.5 2.5 0 0 0</pose> <!-- x, y, z, roll, pitch, yaw -->
+      <link name="obstacle_link">
+        <visual name="obstacle_visual">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>   <!-- 30 cm diameter -->
+              <length>5</length>    <!-- 50 cm tall -->
+            </cylinder>
+          </geometry>
+          <material>
+            <diffuse>0.35 0.43 0.15 1</diffuse> <!-- Gray -->
+          </material>
+        </visual>
+        <!--
+        <collision name="obstacle_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>3</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        --> 
+      </link>
+    </model>
+
+    <model name="obstacle_2">
+      <static>true</static>
+      <pose>6 -1.5 2.5 0 0 0</pose> <!-- x, y, z, roll, pitch, yaw -->
+      <link name="obstacle_link">
+        <visual name="obstacle_visual">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>   <!-- 30 cm diameter -->
+              <length>5</length>    <!-- 50 cm tall -->
+            </cylinder>
+          </geometry>
+          <material>
+            <diffuse>0.21 0.57 0.46 1</diffuse> <!-- Gray -->
+          </material>
+        </visual>
+        <!--
+        <collision name="obstacle_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>3</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+    </model>
+
+    <model name="obstacle_3">
+      <static>true</static>
+      <pose>7 -3.3 2.5 0 0 0</pose> <!-- x, y, z, roll, pitch, yaw -->
+      <link name="obstacle_link">
+        <visual name="obstacle_visual">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>   <!-- 30 cm diameter -->
+              <length>5</length>    <!-- 50 cm tall -->
+            </cylinder>
+          </geometry>
+          <material>
+            <diffuse>0.28 0.07 0.45 1</diffuse> <!-- Gray -->
+          </material>
+        </visual>
+        <!--
+        <collision name="obstacle_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>3</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+    </model>
+
+    <model name="obstacle_4">
+      <static>true</static>
+      <pose>5 -4 2.5 0 0 0</pose> <!-- x, y, z, roll, pitch, yaw -->
+      <link name="obstacle_link">
+        <visual name="obstacle_visual">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>   <!-- 30 cm diameter -->
+              <length>5</length>    <!-- 50 cm tall -->
+            </cylinder>
+          </geometry>
+          <material>
+            <diffuse>0.92 0.05 0.95 1</diffuse> <!-- Gray -->
+          </material>
+        </visual>
+        <!--
+        <collision name="obstacle_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>3</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+    </model>
+
+    <!-- Mission 1. Enter the room -->
+    <!-- Takeoff Platform -->
+    <model name='TakeOff Platform'>
+      <static>true</static>
+      <pose>0 0 0.05 1.57079 0 1.57079</pose> <!-- Initial Position +3.75 -3-->
+      <link name='base_TO_platform'>
+        <visual name='visual'>
+          <geometry>
+            <plane>
+              <normal>0 1 0</normal>
+              <size>1 1</size>
+            </plane>
+          </geometry>
+          <material>
+            <pbr>
+              <metal>
+                <emissive_map>model://images/Landing_Platform.png</emissive_map>
+              </metal>
+            </pbr>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="tunel1_ventana1">
+      <static>true</static>
+
+      <!-- Base vertical bar -->
+      <link name="base">
+        <pose>1.25 -0.75 0.5 0 0 0</pose> <!-- Height is 1.0 m, so origin at 0.5 -->
+        <visual name="vertical_support">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="vertical_support_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Left bar (vertical) -->
+      <link name="leftbar">
+        <pose relative_to="base">0 0.75 1.25 0 0 0</pose>
+        <visual name="left_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="left_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Right bar (vertical) -->
+      <link name="rightbar">
+        <pose relative_to="base">0 -0.75 1.25 0 0 0</pose>
+        <visual name="right_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="right_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Top bar (horizontal) -->
+      <link name="topbar">
+        <pose relative_to="base">0 0 2.0 1.57079 0 0</pose>
+        <visual name="top_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="top_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Bottom bar (horizontal) -->
+      <link name="bottombar">
+        <pose relative_to="base">0 0 0.5 1.57079 0 0</pose>
+        <visual name="bottom_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="bottom_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+    </model>
+
+    <model name="tunel1_ventana2">
+      <static>true</static>
+
+      <!-- Base vertical bar -->
+      <link name="base">
+        <pose>1.65 -0.75 0.5 0 0 0</pose> <!-- Height is 1.0 m, so origin at 0.5 -->
+        <visual name="vertical_support">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="vertical_support_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Left bar (vertical) -->
+      <link name="leftbar">
+        <pose relative_to="base">0 0.75 1.25 0 0 0</pose>
+        <visual name="left_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="left_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Right bar (vertical) -->
+      <link name="rightbar">
+        <pose relative_to="base">0 -0.75 1.25 0 0 0</pose>
+        <visual name="right_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="right_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Top bar (horizontal) -->
+      <link name="topbar">
+        <pose relative_to="base">0 0 2.0 1.57079 0 0</pose>
+        <visual name="top_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="top_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Bottom bar (horizontal) -->
+      <link name="bottombar">
+        <pose relative_to="base">0 0 0.5 1.57079 0 0</pose>
+        <visual name="bottom_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="bottom_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+    </model>
+
+    <model name="tunel1_ventana3">
+      <static>true</static>
+
+      <!-- Base vertical bar -->
+      <link name="base">
+        <pose>2.05 -0.75 0.5 0 0 0</pose> <!-- Height is 1.0 m, so origin at 0.5 -->
+        <visual name="vertical_support">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="vertical_support_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Left bar (vertical) -->
+      <link name="leftbar">
+        <pose relative_to="base">0 0.75 1.25 0 0 0</pose>
+        <visual name="left_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="left_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Right bar (vertical) -->
+      <link name="rightbar">
+        <pose relative_to="base">0 -0.75 1.25 0 0 0</pose>
+        <visual name="right_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="right_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Top bar (horizontal) -->
+      <link name="topbar">
+        <pose relative_to="base">0 0 2.0 1.57079 0 0</pose>
+        <visual name="top_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="top_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Bottom bar (horizontal) -->
+      <link name="bottombar">
+        <pose relative_to="base">0 0 0.5 1.57079 0 0</pose>
+        <visual name="bottom_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="bottom_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+    </model>
+
+    <model name="tunel1_ventana4">
+      <static>true</static>
+
+      <!-- Base vertical bar -->
+      <link name="base">
+        <pose>2.45 -0.75 0.5 0 0 0</pose> <!-- Height is 1.0 m, so origin at 0.5 -->
+        <visual name="vertical_support">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="vertical_support_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Left bar (vertical) -->
+      <link name="leftbar">
+        <pose relative_to="base">0 0.75 1.25 0 0 0</pose>
+        <visual name="left_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="left_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Right bar (vertical) -->
+      <link name="rightbar">
+        <pose relative_to="base">0 -0.75 1.25 0 0 0</pose>
+        <visual name="right_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="right_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Top bar (horizontal) -->
+      <link name="topbar">
+        <pose relative_to="base">0 0 2.0 1.57079 0 0</pose>
+        <visual name="top_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="top_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Bottom bar (horizontal) -->
+      <link name="bottombar">
+        <pose relative_to="base">0 0 0.5 1.57079 0 0</pose>
+        <visual name="bottom_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="bottom_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+    </model>
+
+    <model name="tunel1_ventana5">
+      <static>true</static>
+
+      <!-- Base vertical bar -->
+      <link name="base">
+        <pose>2.85 -0.75 0.5 0 0 0</pose> <!-- Height is 1.0 m, so origin at 0.5 -->
+        <visual name="vertical_support">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="vertical_support_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Left bar (vertical) -->
+      <link name="leftbar">
+        <pose relative_to="base">0 0.75 1.25 0 0 0</pose>
+        <visual name="left_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="left_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Right bar (vertical) -->
+      <link name="rightbar">
+        <pose relative_to="base">0 -0.75 1.25 0 0 0</pose>
+        <visual name="right_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="right_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Top bar (horizontal) -->
+      <link name="topbar">
+        <pose relative_to="base">0 0 2.0 1.57079 0 0</pose>
+        <visual name="top_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="top_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Bottom bar (horizontal) -->
+      <link name="bottombar">
+        <pose relative_to="base">0 0 0.5 1.57079 0 0</pose>
+        <visual name="bottom_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.02 0.55 1 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="bottom_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+    </model>
+
+    <model name="tunel2_ventana1">
+      <static>true</static>
+
+      <!-- Base vertical bar -->
+      <link name="base">
+        <pose>1.25 -2.75 0.5 0 0 0</pose> <!-- Height is 1.0 m, so origin at 0.5 -->
+        <visual name="vertical_support">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="vertical_support_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Left bar (vertical) -->
+      <link name="leftbar">
+        <pose relative_to="base">0 0.5 1.0 0 0 0</pose>
+        <visual name="left_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="left_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Right bar (vertical) -->
+      <link name="rightbar">
+        <pose relative_to="base">0 -0.5 1.0 0 0 0</pose>
+        <visual name="right_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="right_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Top bar (horizontal) -->
+      <link name="topbar">
+        <pose relative_to="base">0 0 1.5 1.57079 0 0</pose>
+        <visual name="top_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="top_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Bottom bar (horizontal) -->
+      <link name="bottombar">
+        <pose relative_to="base">0 0 0.5 1.57079 0 0</pose>
+        <visual name="bottom_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="bottom_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+    </model>
+
+    <model name="tunel2_ventana2">
+      <static>true</static>
+
+      <!-- Base vertical bar -->
+      <link name="base">
+        <pose>1.65 -2.75 0.5 0 0 0</pose> <!-- Height is 1.0 m, so origin at 0.5 -->
+        <visual name="vertical_support">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="vertical_support_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Left bar (vertical) -->
+      <link name="leftbar">
+        <pose relative_to="base">0 0.5 1.0 0 0 0</pose>
+        <visual name="left_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="left_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Right bar (vertical) -->
+      <link name="rightbar">
+        <pose relative_to="base">0 -0.5 1.0 0 0 0</pose>
+        <visual name="right_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="right_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Top bar (horizontal) -->
+      <link name="topbar">
+        <pose relative_to="base">0 0 1.5 1.57079 0 0</pose>
+        <visual name="top_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="top_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Bottom bar (horizontal) -->
+      <link name="bottombar">
+        <pose relative_to="base">0 0 0.5 1.57079 0 0</pose>
+        <visual name="bottom_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="bottom_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+    </model>
+
+    <model name="tunel2_ventana3">
+      <static>true</static>
+
+      <!-- Base vertical bar -->
+      <link name="base">
+        <pose>2.05 -2.75 0.5 0 0 0</pose> <!-- Height is 1.0 m, so origin at 0.5 -->
+        <visual name="vertical_support">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="vertical_support_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Left bar (vertical) -->
+      <link name="leftbar">
+        <pose relative_to="base">0 0.5 1.0 0 0 0</pose>
+        <visual name="left_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="left_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Right bar (vertical) -->
+      <link name="rightbar">
+        <pose relative_to="base">0 -0.5 1.0 0 0 0</pose>
+        <visual name="right_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="right_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Top bar (horizontal) -->
+      <link name="topbar">
+        <pose relative_to="base">0 0 1.5 1.57079 0 0</pose>
+        <visual name="top_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="top_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Bottom bar (horizontal) -->
+      <link name="bottombar">
+        <pose relative_to="base">0 0 0.5 1.57079 0 0</pose>
+        <visual name="bottom_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="bottom_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+    </model>
+
+    <model name="tunel2_ventana4">
+      <static>true</static>
+
+      <!-- Base vertical bar -->
+      <link name="base">
+        <pose>2.45 -2.75 0.5 0 0 0</pose> <!-- Height is 1.0 m, so origin at 0.5 -->
+        <visual name="vertical_support">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="vertical_support_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Left bar (vertical) -->
+      <link name="leftbar">
+        <pose relative_to="base">0 0.5 1.0 0 0 0</pose>
+        <visual name="left_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="left_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Right bar (vertical) -->
+      <link name="rightbar">
+        <pose relative_to="base">0 -0.5 1.0 0 0 0</pose>
+        <visual name="right_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="right_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Top bar (horizontal) -->
+      <link name="topbar">
+        <pose relative_to="base">0 0 1.5 1.57079 0 0</pose>
+        <visual name="top_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="top_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Bottom bar (horizontal) -->
+      <link name="bottombar">
+        <pose relative_to="base">0 0 0.5 1.57079 0 0</pose>
+        <visual name="bottom_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="bottom_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+    </model>
+
+    <model name="tunel2_ventana5">
+      <static>true</static>
+
+      <!-- Base vertical bar -->
+      <link name="base">
+        <pose>2.85 -2.75 0.5 0 0 0</pose> <!-- Height is 1.0 m, so origin at 0.5 -->
+        <visual name="vertical_support">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="vertical_support_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Left bar (vertical) -->
+      <link name="leftbar">
+        <pose relative_to="base">0 0.5 1.0 0 0 0</pose>
+        <visual name="left_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="left_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Right bar (vertical) -->
+      <link name="rightbar">
+        <pose relative_to="base">0 -0.5 1.0 0 0 0</pose>
+        <visual name="right_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="right_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Top bar (horizontal) -->
+      <link name="topbar">
+        <pose relative_to="base">0 0 1.5 1.57079 0 0</pose>
+        <visual name="top_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="top_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Bottom bar (horizontal) -->
+      <link name="bottombar">
+        <pose relative_to="base">0 0 0.5 1.57079 0 0</pose>
+        <visual name="bottom_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>0.124 0.478 0.204 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="bottom_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+    </model>
+
+    <model name="tunel3_ventana1">
+      <static>true</static>
+
+      <!-- Base vertical bar -->
+      <link name="base">
+        <pose>1.25 -4.25 0.5 0 0 0</pose> <!-- Height is 1.0 m, so origin at 0.5 -->
+        <visual name="vertical_support">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="vertical_support_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Left bar (vertical) -->
+      <link name="leftbar">
+        <pose relative_to="base">0 0.25 0.75 0 0 0</pose>
+        <visual name="left_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="left_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Right bar (vertical) -->
+      <link name="rightbar">
+        <pose relative_to="base">0 -0.25 0.75 0 0 0</pose>
+        <visual name="right_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="right_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Top bar (horizontal) -->
+      <link name="topbar">
+        <pose relative_to="base">0 0 1.0 1.57079 0 0</pose>
+        <visual name="top_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="top_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Bottom bar (horizontal) -->
+      <link name="bottombar">
+        <pose relative_to="base">0 0 0.5 1.57079 0 0</pose>
+        <visual name="bottom_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="bottom_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+    </model>
+
+    <model name="tunel3_ventana2">
+      <static>true</static>
+
+      <!-- Base vertical bar -->
+      <link name="base">
+        <pose>1.65 -4.25 0.5 0 0 0</pose> <!-- Height is 1.0 m, so origin at 0.5 -->
+        <visual name="vertical_support">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="vertical_support_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Left bar (vertical) -->
+      <link name="leftbar">
+        <pose relative_to="base">0 0.25 0.75 0 0 0</pose>
+        <visual name="left_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="left_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Right bar (vertical) -->
+      <link name="rightbar">
+        <pose relative_to="base">0 -0.25 0.75 0 0 0</pose>
+        <visual name="right_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="right_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Top bar (horizontal) -->
+      <link name="topbar">
+        <pose relative_to="base">0 0 1.0 1.57079 0 0</pose>
+        <visual name="top_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="top_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Bottom bar (horizontal) -->
+      <link name="bottombar">
+        <pose relative_to="base">0 0 0.5 1.57079 0 0</pose>
+        <visual name="bottom_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="bottom_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+    </model>
+
+    <model name="tunel3_ventana3">
+      <static>true</static>
+
+      <!-- Base vertical bar -->
+      <link name="base">
+        <pose>2.05 -4.25 0.5 0 0 0</pose> <!-- Height is 1.0 m, so origin at 0.5 -->
+        <visual name="vertical_support">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="vertical_support_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Left bar (vertical) -->
+      <link name="leftbar">
+        <pose relative_to="base">0 0.25 0.75 0 0 0</pose>
+        <visual name="left_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="left_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Right bar (vertical) -->
+      <link name="rightbar">
+        <pose relative_to="base">0 -0.25 0.75 0 0 0</pose>
+        <visual name="right_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="right_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Top bar (horizontal) -->
+      <link name="topbar">
+        <pose relative_to="base">0 0 1.0 1.57079 0 0</pose>
+        <visual name="top_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="top_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Bottom bar (horizontal) -->
+      <link name="bottombar">
+        <pose relative_to="base">0 0 0.5 1.57079 0 0</pose>
+        <visual name="bottom_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="bottom_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+    </model>
+
+    <model name="tunel3_ventana4">
+      <static>true</static>
+
+      <!-- Base vertical bar -->
+      <link name="base">
+        <pose>2.45 -4.25 0.5 0 0 0</pose> <!-- Height is 1.0 m, so origin at 0.5 -->
+        <visual name="vertical_support">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="vertical_support_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Left bar (vertical) -->
+      <link name="leftbar">
+        <pose relative_to="base">0 0.25 0.75 0 0 0</pose>
+        <visual name="left_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="left_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Right bar (vertical) -->
+      <link name="rightbar">
+        <pose relative_to="base">0 -0.25 0.75 0 0 0</pose>
+        <visual name="right_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="right_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Top bar (horizontal) -->
+      <link name="topbar">
+        <pose relative_to="base">0 0 1.0 1.57079 0 0</pose>
+        <visual name="top_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="top_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Bottom bar (horizontal) -->
+      <link name="bottombar">
+        <pose relative_to="base">0 0 0.5 1.57079 0 0</pose>
+        <visual name="bottom_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="bottom_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+    </model>
+
+    <model name="tunel3_ventana5">
+      <static>true</static>
+
+      <!-- Base vertical bar -->
+      <link name="base">
+        <pose>2.85 -4.25 0.5 0 0 0</pose> <!-- Height is 1.0 m, so origin at 0.5 -->
+        <visual name="vertical_support">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="vertical_support_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Left bar (vertical) -->
+      <link name="leftbar">
+        <pose relative_to="base">0 0.25 0.75 0 0 0</pose>
+        <visual name="left_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="left_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Right bar (vertical) -->
+      <link name="rightbar">
+        <pose relative_to="base">0 -0.25 0.75 0 0 0</pose>
+        <visual name="right_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="right_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Top bar (horizontal) -->
+      <link name="topbar">
+        <pose relative_to="base">0 0 1.0 1.57079 0 0</pose>
+        <visual name="top_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="top_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+
+      <!-- Bottom bar (horizontal) -->
+      <link name="bottombar">
+        <pose relative_to="base">0 0 0.5 1.57079 0 0</pose>
+        <visual name="bottom_bar">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+          <material><diffuse>1.0 0 0 1</diffuse></material>
+        </visual>
+        <!--
+        <collision name="bottom_bar_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.025</radius>
+              <length>0.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        -->
+      </link>
+    </model>
+
+    <!-- Boxes models -->
+    <model name="box_1">
+      <static>true</static>
+      <link name="link">
+        <!--
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        -->
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>meshes/box.glb</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>0 -5 0 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <model name="escritorio">
+      <static>true</static>
+      <link name="link">
+      <!--
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        -->
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>meshes/escritorio.glb</uri>
+              <scale>0.75 0.75 0.75</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3 1.6 0 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <model name="silla">
+      <static>true</static>
+      <link name="link">
+        <!--
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        -->
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>meshes/silla.glb</uri>
+              <scale>1.2 1.2 1.2</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>-0.75 -4 0 1.57079 0 1.57079</pose>
+      </link>
+    </model>
+
+    <model name="sillon_perry">
+      <static>true</static>
+      <link name="link">
+        <!--
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        -->
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>meshes/sillon_perry.glb</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>1 -7.5 0 1.57079 0 3.14159</pose>
+      </link>
+    </model>
+
+    <model name="librero">
+      <static>true</static>
+      <link name="link">
+        <!--
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        -->
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>meshes/librero.glb</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>8.5 -2 0 1.57079 0 -1.57079</pose>
+      </link>
+    </model>
+
+    <model name="lockers">
+      <static>true</static>
+      <link name="link">
+        <!--
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        -->
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>meshes/lockers.glb</uri>
+              <scale>0.9 0.9 0.9</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>6 -7.3 1 1.57079 0 3.14159</pose>
+      </link>
+    </model>
+
+    <model name="plantas">
+      <static>true</static>
+      <link name="link">
+        <!--
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        -->
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>meshes/tres_plantas.glb</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>6 1.5 0 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <model name="trash_can">
+      <static>true</static>
+      <link name="link">
+        <!--
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        -->
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>meshes/trash_can.glb</uri>
+              <scale>5 5 5</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>-0.7 1.5 0 1.57079 0 0</pose>
+      </link>
+    </model>
+
+  </world>
+</sdf>
