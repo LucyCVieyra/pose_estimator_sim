@@ -174,14 +174,7 @@ This terminal is also where you run your pose estimator node.
 
 ## Troubleshooting
 
-- **No camera topics** (`gz topic -l` doesn't show `/camera/image_raw`): PX4 is still using the stock x500. Repeat [step 2](#2-install-the-custom-x500-model-into-px4).
-- **Missing textures or meshes in Gazebo**: run `gz sim` from inside the world folder, or add the folder to the resource path:
-
-    ```sh
-    export GZ_SIM_RESOURCE_PATH=$GZ_SIM_RESOURCE_PATH:~/pose_estimator_sim/cats_world
-    ```
-
-- **The tugbot world loads with no building**: the Depot model is downloaded from Gazebo Fuel the first time it runs. Check your internet connection and wait for the download to finish.
+- 
 - **Restoring the stock drone**:
 
     ```sh
