@@ -2147,7 +2147,7 @@
       </link>
     </model>
 
-    <model name="escritorio">
+    <model name="desk">
       <static>true</static>
       <link name="link">
         <collision name="collision">
@@ -2160,7 +2160,7 @@
         <visual name="visual">
           <geometry>
             <mesh>
-              <uri>meshes/escritorio.glb</uri>
+              <uri>meshes/desk.glb</uri>
               <scale>0.75 0.75 0.75</scale>
             </mesh>
           </geometry>
@@ -2169,7 +2169,7 @@
       </link>
     </model>
 
-    <model name="silla">
+    <model name="chair">
       <static>true</static>
       <link name="link">
         <collision name="collision">
@@ -2182,7 +2182,7 @@
         <visual name="visual">
           <geometry>
             <mesh>
-              <uri>meshes/silla.glb</uri>
+              <uri>meshes/chair.glb</uri>
               <scale>1.2 1.2 1.2</scale>
             </mesh>
           </geometry>

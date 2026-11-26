@@ -401,5 +401,699 @@
         </collision>
       </link>
     </model>
+
+    <!-- Takeoff Platform -->
+    <model name='TakeOff Platform'>
+      <static>true</static>
+      <pose>-2 1 0.018 1.57079 0 1.57079</pose>
+      <link name='base_TO_platform'>
+        <visual name='visual'>
+          <geometry>
+            <plane>
+              <normal>0 1 0</normal>
+              <size>1 1</size>
+            </plane>
+          </geometry>
+          <material>
+            <pbr>
+              <metal>
+                <emissive_map>model://images/Landing_Platform.png</emissive_map>
+              </metal>
+            </pbr>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Tool cabinet -->
+    <model name="tool_cabinet">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/tool_cabinet.glb</uri>
+              <scale>0.05 0.05 0.05</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>-2 -6.1 0 1.57079 0 3.14159</pose>
+      </link>
+    </model>
+
+    <!-- Lockers -->
+    <model name="lockers_1">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/industrial_lockers.glb</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>-1.5 7.7 0 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <model name="lockers_2">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/industrial_lockers.glb</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>-2.75 7.7 0 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <model name="lockers_3">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/industrial_lockers.glb</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>-4 7.7 0 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <!-- Box Shelving -->
+    <model name="box_shelving">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/box_shelving.glb</uri>
+              <scale>0.025 0.025 0.025</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>5.0 -3.0 0 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <!-- Pallet Rack -->
+    <model name="pallet_rack">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/pallet_rack.glb</uri>
+              <scale>3.7 3.7 3.7</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>2 -3.0 0 1.57079 0 1.57079</pose>
+      </link>
+    </model>
+
+    <!-- Warehouse Shelf -->
+    <model name="warehouse_shelf">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/warehouse_shelf.glb</uri>
+              <scale>1.0 1.0 1.0</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 3.5 0.0 1.57079 0 -1.57079</pose>
+      </link>
+    </model>
+
+    <!-- Shelf containers -->
+    <model name="container_1">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/container.glb</uri>
+              <scale>0.04 0.04 0.04</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 5.5 0.28 1.57079 0 1.57079</pose>
+      </link>
+    </model>
+
+    <model name="container_2">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/container.glb</uri>
+              <scale>0.04 0.04 0.04</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 4.5 0.28 1.57079 0 1.57079</pose>
+      </link>
+    </model>
+
+    <model name="container_3">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/container.glb</uri>
+              <scale>0.04 0.04 0.04</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 3.5 0.28 1.57079 0 1.57079</pose>
+      </link>
+    </model>
+
+    <model name="container_4">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/container.glb</uri>
+              <scale>0.04 0.04 0.04</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 2.5 0.28 1.57079 0 1.57079</pose>
+      </link>
+    </model>
+
+    <model name="container_5">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/container.glb</uri>
+              <scale>0.04 0.04 0.04</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 1.5 0.28 1.57079 0 1.57079</pose>
+      </link>
+    </model>
+
+    <!-- Plastic Containers -->
+    <model name="plastic_container_1">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/plastic_container.glb</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 5.5 1.67 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <model name="plastic_container_2">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/plastic_container.glb</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 4.75 1.67 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <model name="plastic_container_3">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/plastic_container.glb</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 4 1.67 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <model name="plastic_container_4">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/plastic_container.glb</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 3.25 1.67 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <model name="plastic_container_5">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/plastic_container.glb</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 2.5 1.67 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <model name="plastic_container_6">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/plastic_container.glb</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 1.75 1.67 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <!-- Plastic Crates -->
+    <model name="blue_crate_1">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/blue_crate.glb</uri>
+              <scale>1.3 1.3 1.3</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 5.5 3.06 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <model name="red_crate_1">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/red_crate.glb</uri>
+              <scale>1.3 1.3 1.3</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 5 3.06 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <model name="green_crate_1">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/green_crate.glb</uri>
+              <scale>1.3 1.3 1.3</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 4.5 3.06 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <model name="blue_crate_2">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/blue_crate.glb</uri>
+              <scale>1.3 1.3 1.3</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 4 3.06 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <model name="red_crate_2">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/red_crate.glb</uri>
+              <scale>1.3 1.3 1.3</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 3.5 3.06 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <model name="green_crate_2">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/green_crate.glb</uri>
+              <scale>1.3 1.3 1.3</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 3 3.06 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <model name="blue_crate_3">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/blue_crate.glb</uri>
+              <scale>1.3 1.3 1.3</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 2.5 3.06 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <model name="red_crate_3">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/red_crate.glb</uri>
+              <scale>1.3 1.3 1.3</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 2 3.06 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <model name="green_crate_3">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/green_crate.glb</uri>
+              <scale>1.3 1.3 1.3</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>3.2 1.5 3.06 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <!-- Red Forklift -->
+    <model name="red_forklift">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/red_forklift.glb</uri>
+              <scale>0.9 0.9 0.9</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>-4 6 0.1 1.57079 0 3.14159</pose>
+      </link>
+    </model>
+
+    <!-- Yellow Forklift -->
+    <model name="yellow_forklift">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/yellow_forklift.glb</uri>
+              <scale>1.3 1.3 1.3</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>-3 -4 0.1 1.57079 0 0</pose>
+      </link>
+    </model>
+
+    <!-- Pallet Jack -->
+    <model name="pallet_jack">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1 1 1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>costum_meshes/pallet_jack.glb</uri>
+              <scale>0.5 0.5 0.5</scale>
+            </mesh>
+          </geometry>
+        </visual>
+        <pose>6 3 0.1 1.57079 0 -2.35619</pose>
+      </link>
+    </model>
   </world>
 </sdf>
